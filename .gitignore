@@ -18,9 +18,6 @@
 # Files for the ART/Dalvik VM
 *.dex
 
-# Java class files
-*.class
-
 # Generated files
 bin/
 gen/
@@ -60,3 +57,4 @@ library/src/main/res/drawable/
 libs/
 src/main/res/drawable/
 src/main/java/
+app/src/main/java/com/kevin/android/util/
