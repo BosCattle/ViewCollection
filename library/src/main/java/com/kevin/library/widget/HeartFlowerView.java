@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.WindowManager;
@@ -242,7 +243,19 @@ public class HeartFlowerView extends View implements ValueAnimator.AnimatorUpdat
         }
     }
 
-    /**
+  public void setmFlowerOne(List<Flower> mFlowerOne) {
+    this.mFlowerOne = mFlowerOne;
+  }
+
+  public void setmFlowerTwo(List<Flower> mFlowerTwo) {
+    this.mFlowerTwo = mFlowerTwo;
+  }
+
+  public void setmFlowerThree(List<Flower> mFlowerThree) {
+    this.mFlowerThree = mFlowerThree;
+  }
+
+  /**
      * Interface: HeartMotion </br>
      * Description:  </br>
      * Creator: Kevin </br>
