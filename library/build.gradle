@@ -1,15 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'//ADD
 
-//publish {
-//    userOrg = 'kevinbas'
-//    groupId = 'com.kevinbas'
-//    artifactId = 'customview'
-//    publishVersion = '0.0.1_alpha'
-//    desc = 'It is a custom view library,include some beautiful view come from project'
-//    website = 'https://github.com/jiangTaoQuite/ViewCollection'
-//}
-
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
