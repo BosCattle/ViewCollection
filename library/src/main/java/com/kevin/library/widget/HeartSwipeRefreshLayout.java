@@ -3,12 +3,10 @@ package com.kevin.library.widget;
 import android.content.Context;
 import android.annotation.TargetApi;
 import android.os.Build;
-import android.support.annotation.Nullable;
 import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.view.NestedScrollingParent;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
 
 /*
@@ -52,16 +50,14 @@ public class HeartSwipeRefreshLayout extends ViewGroup implements NestedScrollin
     void onRefresh();
   }
 
-  public interface OnChildScrollUpCallback {
     /**
-     * Callback that will be called when {@link SwipeRefreshLayout#canChildScrollUp()} method
-     * is called to allow the implementer to override its behavior.
-     *
-     * @param parent SwipeRefreshLayout that this callback is overriding.
-     * @param child The child view of SwipeRefreshLayout.
-     *
-     * @return Whether it is possible for the child view of parent layout to scroll up.
+     * 最顶层触摸事件拦截器
+     * @param ev 事件
+     * @return {@link Boolean}
      */
-    boolean canChildScrollUp(SwipeRefreshLayout parent, @Nullable View child);
-  }
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        return super.onInterceptTouchEvent(ev);
+    }
+
 }
