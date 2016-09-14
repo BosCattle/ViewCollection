@@ -29,19 +29,22 @@ import com.kevin.library.widget.builder.PositiveClickListener;
 
 public  class CleanDialog extends AlertDialog {
 
-    public IconFlag mIconFlag;
-    public String mTitle;
-    public String mNegativeButton;
-    public String mPositiveButton;
-    public NegativeClickListener mNegativeClickListener;
-    public PositiveClickListener mPositiveClickListener;
-    @ColorInt public int mNegativeTextColor;
-    @ColorInt public int mPositiveTextColor;
-    @DrawableRes public int mStyle;
-    public Context mContext;
+    private IconFlag mIconFlag;
+    private String mTitle;
+    private String mNegativeButton;
+    private String mPositiveButton;
+    private NegativeClickListener mNegativeClickListener;
+    private PositiveClickListener mPositiveClickListener;
+    @ColorInt
+    private int mNegativeTextColor;
+    @ColorInt
+    private int mPositiveTextColor;
+    @DrawableRes
+    private int mStyle;
+    private Context mContext;
 
 
-    protected CleanDialog(Context context) {
+    private CleanDialog(Context context) {
         super(context);
     }
 
@@ -54,14 +57,16 @@ public  class CleanDialog extends AlertDialog {
     }
 
     public static class Builder {
-        public IconFlag iconFlag;
+        IconFlag iconFlag;
         public String title;
-        public String negativeButton;
-        public String positiveButton;
-        public NegativeClickListener negativeClickListener;
-        public PositiveClickListener positiveClickListener;
-        @ColorInt public int negativeTextColor;
-        @ColorInt public int positiveTextColor;
+        String negativeButton;
+        String positiveButton;
+        NegativeClickListener negativeClickListener;
+        PositiveClickListener positiveClickListener;
+        @ColorInt
+        int negativeTextColor;
+        @ColorInt
+        int positiveTextColor;
         @DrawableRes public int style;
         public Context context;
 
@@ -77,12 +82,13 @@ public  class CleanDialog extends AlertDialog {
             dialog.mNegativeTextColor = negativeTextColor;
             dialog.mPositiveTextColor = positiveTextColor;
             dialog.mStyle  = style;
+            initialization(dialog);
             return dialog;
         }
 
-        public  void initialization() {
-            ViewGroup root = (ViewGroup) ((Activity)context).getWindow().getDecorView().getRootView();
-            View view = LayoutInflater.from(context).inflate(R.layout.view_custom_dialog,root,false);
+        public  void initialization(CleanDialog dialog) {
+            ViewGroup root = (ViewGroup) ((Activity)dialog.mContext).getWindow().getDecorView().getRootView();
+            View view = LayoutInflater.from(dialog.mContext).inflate(R.layout.view_custom_dialog,root,false);
             AppCompatImageView image = (AppCompatImageView) view.findViewById(R.id.image_dialog);
             AppCompatTextView textview = (AppCompatTextView) view.findViewById(R.id.view_dialog_av_text);
             AppCompatButton mPositiveButton = (AppCompatButton) view.findViewById(R.id.view_dialog_sure);
@@ -117,6 +123,7 @@ public  class CleanDialog extends AlertDialog {
             }
             image.setImageResource(iconFlag.getImage());
             textview.setText(title);
+            dialog.setView(view);
         }
 
         public Builder iconFlag(IconFlag flag){
@@ -167,8 +174,7 @@ public  class CleanDialog extends AlertDialog {
 
     }
 
-    public void showDialog(){
-        final CleanDialog dialog = new CleanDialog(mContext);
+    public void showDialog(CleanDialog dialog){
         Window win = dialog.getWindow();
         win.setWindowAnimations(R.style.dialogWindowAnim);
         dialog.show();
