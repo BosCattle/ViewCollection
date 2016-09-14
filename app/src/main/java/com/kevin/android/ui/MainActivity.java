@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.kevin.android.R;
 import com.kevin.android.adapter.RecyclerViewAdapter;
+import com.kevin.android.ui.viewgroup.DialogActivity;
 
 import java.util.ArrayList;
 
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     protected void onResume() {
         super.onResume();
         mDatas.add("仙女散花");
+        mDatas.add("View事件分发");
+        mDatas.add("Dialog测试");
     }
 
     private void setUpAdapter() {
@@ -63,6 +66,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                 FlowerActivity.startFlower(MainActivity.this);
                 break;
             case 1:
+                EventDistributionActivity.startEventDistribution(MainActivity.this);
+                break;
+            case 2:
+                DialogActivity.startDialog(MainActivity.this);
                 break;
         }
     }

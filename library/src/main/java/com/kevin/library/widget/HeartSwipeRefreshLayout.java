@@ -5,8 +5,10 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.view.NestedScrollingParent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 
 /*
@@ -18,7 +20,7 @@ import android.view.ViewGroup;
  */
 
 public class HeartSwipeRefreshLayout extends ViewGroup implements NestedScrollingParent,
-    NestedScrollingChild {
+    NestedScrollingChild,View.OnTouchListener {
   public HeartSwipeRefreshLayout(Context context) {
     super(context);
   }
@@ -41,6 +43,10 @@ public class HeartSwipeRefreshLayout extends ViewGroup implements NestedScrollin
 
   }
 
+  @Override
+  public boolean onTouch(View view, MotionEvent motionEvent) {
+    return false;
+  }
 
 
   public interface OnRefreshListener {
@@ -57,6 +63,7 @@ public class HeartSwipeRefreshLayout extends ViewGroup implements NestedScrollin
      */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+
         return super.onInterceptTouchEvent(ev);
     }
 

@@ -18,7 +18,9 @@
         <activity
             android:name=".ui.FlowerActivity"
             android:label="仙女散花" />
-        <activity android:name=".ui.SwipeRefreshLayoutActivity"></activity>
+        <activity android:name=".ui.SwipeRefreshLayoutActivity" />
+        <activity android:name=".ui.EventDistributionActivity" />
+        <activity android:name=".ui.viewgroup.DialogActivity"></activity>
     </application>
 
 </manifest>

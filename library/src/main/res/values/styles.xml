@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--dialog animation-->
+    <style name="dialogWindowAnim" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/set_made_in</item>
+        <item name="android:windowExitAnimation">@anim/set_made_out</item>
+    </style>
+</resources>
