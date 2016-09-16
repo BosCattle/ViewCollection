@@ -1,8 +1,9 @@
 # ViewCollection
 **a view assemble in my project.**
-1. `HeartSwipeRefreshLayout`(a heart view SwipeRefreshLayout).
-2. `HeartFlowerView`(a follower flow effect).
-3. `SideBar`(a letter sort from sidebar)
+1. `HeartSwipeRefreshLayout`(a heart view SwipeRefreshLayout).</br>
+2. `HeartFlowerView`(a follower flow effect).</br>
+3. `SideBar`(a letter sort from sidebar).</br>
+4. `CleanDialog`(a simple dialog in my application).</br>
 
 ## How to use
 ### Maven
