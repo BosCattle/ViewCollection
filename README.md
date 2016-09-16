@@ -1,5 +1,6 @@
 # ViewCollection
-**a view assemble in my project.**</br>
+**a view assemble in my project.**
+</br>
 1. `HeartSwipeRefreshLayout`(a heart view SwipeRefreshLayout).</br>
 2. `HeartFlowerView`(a follower flow effect).</br>
 3. `SideBar`(a letter sort from sidebar).</br>
