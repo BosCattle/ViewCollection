@@ -22,7 +22,7 @@ import com.kevin.library.widget.builder.PositiveClickListener;
 
 /**
  * Class: CleanDialog </br>
- * Description: 干净的dialog </br>
+ * Description: 项目中使用的dialog </br>
  * Creator: kevin </br>
  * Email: jiangtao103cp@gmail.com </br>
  * Date: 16/9/14 上午9:36</br>

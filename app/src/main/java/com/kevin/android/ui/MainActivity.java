@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         mDatas.add("仙女散花");
         mDatas.add("View事件分发");
         mDatas.add("Dialog测试");
+        mDatas.add("蒙层");
     }
 
     private void setUpAdapter() {
@@ -69,6 +70,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                 break;
             case 2:
                 DialogActivity.startDialog(MainActivity.this);
+                break;
+            case 3:
+                MaskLayerDialogActivity.startMaskLayer(MainActivity.this);
                 break;
         }
     }
