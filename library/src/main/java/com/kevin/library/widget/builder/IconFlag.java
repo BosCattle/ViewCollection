@@ -14,7 +14,7 @@ import com.kevin.library.R;
  **/
 
 public enum  IconFlag {
-    INFO(1),ERROR(2),WARN(3);
+    OK(1),ERROR(2),WARN(3);
 
     public int mFlag;
 
@@ -25,9 +25,9 @@ public enum  IconFlag {
     @DrawableRes public int getImage(){
         switch (mFlag){
             case 1:
-                return R.mipmap.ic_dialog_info;
+                return R.mipmap.ic_dialog_positive;
             case 2:
-                return R.mipmap.ic_dialog_info;
+                return R.mipmap.ic_dialog_negative;
             case 3:
                 return R.mipmap.ic_dialog_info;
         }

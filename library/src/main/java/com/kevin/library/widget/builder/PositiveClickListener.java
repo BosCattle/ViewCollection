@@ -1,5 +1,8 @@
 package com.kevin.library.widget.builder;
 
+
+import com.kevin.library.widget.CleanDialog;
+
 /**
  * Class: PositiveClickListener </br>
  * Description: 正面的点击监听 </br>
@@ -10,5 +13,5 @@ package com.kevin.library.widget.builder;
  **/
 
 public interface PositiveClickListener {
-    void onPositiveClickListener();
+    void onPositiveClickListener(CleanDialog dialog);
 }

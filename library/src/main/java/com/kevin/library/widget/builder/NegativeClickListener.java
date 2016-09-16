@@ -1,5 +1,7 @@
 package com.kevin.library.widget.builder;
 
+import com.kevin.library.widget.CleanDialog;
+
 /**
  * Class: NegativeClickListener </br>
  * Description: 反面的bottom点击事件 </br>
@@ -11,5 +13,5 @@ package com.kevin.library.widget.builder;
 
 public interface NegativeClickListener {
 
-    void onNegativeClickListener();
+    void onNegativeClickListener(CleanDialog dialog);
 }

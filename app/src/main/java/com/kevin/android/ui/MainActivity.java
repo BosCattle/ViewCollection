@@ -9,7 +9,6 @@ import android.widget.RelativeLayout;
 
 import com.kevin.android.R;
 import com.kevin.android.adapter.RecyclerViewAdapter;
-import com.kevin.android.ui.viewgroup.DialogActivity;
 
 import java.util.ArrayList;
 

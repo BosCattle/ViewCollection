@@ -20,7 +20,7 @@
             android:label="仙女散花" />
         <activity android:name=".ui.SwipeRefreshLayoutActivity" />
         <activity android:name=".ui.EventDistributionActivity" />
-        <activity android:name=".ui.viewgroup.DialogActivity"></activity>
+        <activity android:name=".ui.DialogActivity"></activity>
     </application>
 
 </manifest>
