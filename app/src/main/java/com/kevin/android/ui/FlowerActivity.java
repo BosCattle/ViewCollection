@@ -21,32 +21,20 @@ import butterknife.InjectView;
  */
 public class FlowerActivity extends AppCompatActivity {
 
-  public static final String TAG = FlowerActivity.class.getSimpleName();
+    public static final String TAG = FlowerActivity.class.getSimpleName();
 
-  @InjectView(R.id.flower_flower) HeartFlowerView flowerFlower;
-  @InjectView(R.id.activity_flower) RelativeLayout activityFlower;
+    HeartFlowerView flowerFlower;
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_flower);
-    ButterKnife.inject(this);
-    flowerFlower.setHeartMotion(new HeartFlowerView.HeartMotion() {
-      @Override public void onStart(int times, int time, int delay) {
-        flowerFlower.startAnimation(times, time, delay);
-      }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_flower);
+        flowerFlower = (HeartFlowerView) findViewById(R.id.flower_flower);
+        flowerFlower.startAnimation();
+    }
 
-      @Override public void onTick() {
-        Log.d(TAG, "onTick: ");
-      }
-
-      @Override public void onFinish() {
-        finish();
-      }
-    });
-  }
-
-  public static void startFlower(AppCompatActivity activity) {
-    Intent intent = new Intent(activity, FlowerActivity.class);
-    activity.startActivity(intent);
-  }
+    public static void startFlower(AppCompatActivity activity) {
+        Intent intent = new Intent(activity, FlowerActivity.class);
+        activity.startActivity(intent);
+    }
 }
