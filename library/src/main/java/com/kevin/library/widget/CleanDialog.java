@@ -70,7 +70,11 @@ public  class CleanDialog extends AlertDialog {
         @DrawableRes public int style;
         public Context context;
 
-        public CleanDialog builder(Context context){
+        public Builder(Context context){
+            this.context = context;
+        }
+
+        public CleanDialog builder(){
             CleanDialog dialog = new CleanDialog(context);
             dialog.mContext = context;
             dialog.mIconFlag = iconFlag;
@@ -86,9 +90,9 @@ public  class CleanDialog extends AlertDialog {
             return dialog;
         }
 
-        public  void initialization(CleanDialog dialog) {
-            ViewGroup root = (ViewGroup) ((Activity)dialog.mContext).getWindow().getDecorView().getRootView();
-            View view = LayoutInflater.from(dialog.mContext).inflate(R.layout.view_custom_dialog,root,false);
+        public  void initialization(final CleanDialog dialog) {
+            ViewGroup root = (ViewGroup) ((Activity)context).getWindow().getDecorView().getRootView();
+            View view = LayoutInflater.from(context).inflate(R.layout.view_custom_dialog,root,false);
             AppCompatImageView image = (AppCompatImageView) view.findViewById(R.id.image_dialog);
             AppCompatTextView textview = (AppCompatTextView) view.findViewById(R.id.view_dialog_av_text);
             AppCompatButton mPositiveButton = (AppCompatButton) view.findViewById(R.id.view_dialog_sure);
@@ -136,22 +140,14 @@ public  class CleanDialog extends AlertDialog {
             return this;
         }
 
-        public Builder negativeButton(String text){
+        public Builder negativeButton(String text,NegativeClickListener negativeClickListener){
             negativeButton = text;
-            return this;
-        }
-
-        public Builder positiveButton(String text){
-            positiveButton = text;
-            return this;
-        }
-
-        public Builder negativeClickListener(NegativeClickListener negativeClickListener){
             this.negativeClickListener = negativeClickListener;
             return this;
         }
 
-        public Builder positiveClickListener(PositiveClickListener positiveClickListener){
+        public Builder positiveButton(String text,PositiveClickListener positiveClickListener){
+            positiveButton = text;
             this.positiveClickListener = positiveClickListener;
             return this;
         }
@@ -170,11 +166,9 @@ public  class CleanDialog extends AlertDialog {
             this.style = style;
             return this;
         }
-
-
     }
 
-    public void showDialog(CleanDialog dialog){
+    public  void showDialog(CleanDialog dialog){
         Window win = dialog.getWindow();
         win.setWindowAnimations(R.style.dialogWindowAnim);
         dialog.show();

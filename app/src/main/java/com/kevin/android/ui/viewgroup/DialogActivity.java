@@ -1,6 +1,8 @@
 package com.kevin.android.ui.viewgroup;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,23 +20,22 @@ public class DialogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialog);
-         final CleanDialog dialog = new CleanDialog.Builder().iconFlag(IconFlag.INFO).negativeButton("取消").positiveButton("确定").title("哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈").positiveClickListener(new PositiveClickListener() {
+        final CleanDialog dialog = new CleanDialog.Builder(this).iconFlag(IconFlag.INFO).negativeButton("取消", new NegativeClickListener() {
+            @Override
+            public void onNegativeClickListener() {
+            }
+        }).positiveButton("确定", new PositiveClickListener() {
             @Override
             public void onPositiveClickListener() {
                 Intent intent = new Intent(DialogActivity.this, SwipeRefreshLayoutActivity.class);
                 startActivity(intent);
             }
-        }).negativeClickListener(new NegativeClickListener() {
-             @Override
-             public void onNegativeClickListener() {
-
-             }
-         }).builder(this);
+        }).title("哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈").builder();
         dialog.showDialog(dialog);
     }
 
-    public static void startDialog(Activity activity){
-        Intent intent = new Intent(activity,DialogActivity.class);
+    public static void startDialog(Activity activity) {
+        Intent intent = new Intent(activity, DialogActivity.class);
         activity.startActivity(intent);
     }
 }
