@@ -10,6 +10,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -94,7 +96,6 @@ public class HeartFlowerView extends View implements ValueAnimator.AnimatorUpdat
         builderFollower(mFlowerCount, flower1);
         builderFollower(mFlowerCount, flower2);
         builderFollower(mFlowerCount, flower3);
-
     }
 
 
@@ -272,11 +273,10 @@ public class HeartFlowerView extends View implements ValueAnimator.AnimatorUpdat
 
     @Override
     public void onAnimationUpdate(ValueAnimator arg0) {
-
-        updateValue(getPhase1(), flower1);
-        updateValue(getPhase2(), flower2);
-        updateValue(getPhase3(), flower3);
-        invalidate();
+            updateValue(getPhase1(), flower1);
+            updateValue(getPhase2(), flower2);
+            updateValue(getPhase3(), flower3);
+            invalidate();
     }
 
     public float getPhase1() {
