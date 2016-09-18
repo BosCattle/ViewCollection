@@ -21,7 +21,8 @@
         <activity android:name=".ui.SwipeRefreshLayoutActivity" />
         <activity android:name=".ui.EventDistributionActivity" />
         <activity android:name=".ui.DialogActivity" />
-        <activity android:name=".ui.MaskLayerDialogActivity"></activity>
+        <activity android:name=".ui.MaskLayerDialogActivity" />
+        <activity android:name=".ui.HeartViewActivity"></activity>
     </application>
 
 </manifest>
