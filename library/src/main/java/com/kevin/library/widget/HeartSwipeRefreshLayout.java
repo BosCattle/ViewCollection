@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 /*
  * Class: HeartSwipeRefreshLayout </br>
@@ -19,8 +20,7 @@ import android.view.ViewGroup;
  * Update: 2016/8/25 2016/8/25 </br>
  */
 
-public class HeartSwipeRefreshLayout extends ViewGroup implements NestedScrollingParent,
-    NestedScrollingChild,View.OnTouchListener {
+public class HeartSwipeRefreshLayout extends RelativeLayout {
   public HeartSwipeRefreshLayout(Context context) {
     super(context);
   }
@@ -42,29 +42,4 @@ public class HeartSwipeRefreshLayout extends ViewGroup implements NestedScrollin
   @Override protected void onLayout(boolean b, int i, int i1, int i2, int i3) {
 
   }
-
-  @Override
-  public boolean onTouch(View view, MotionEvent motionEvent) {
-    return false;
-  }
-
-
-  public interface OnRefreshListener {
-    /**
-     * Called when a swipe gesture triggers a refresh.
-     */
-    void onRefresh();
-  }
-
-    /**
-     * 最顶层触摸事件拦截器
-     * @param ev 事件
-     * @return {@link Boolean}
-     */
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-
-        return super.onInterceptTouchEvent(ev);
-    }
-
 }
