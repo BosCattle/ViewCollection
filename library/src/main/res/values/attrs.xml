@@ -12,5 +12,6 @@
     <attr name="color_selected" format="color|reference"/>
     <attr name="color_unselected" format="color|reference"/>
     <attr name="line_height" format="dimension|reference"/>
+    <attr name="circle_radius" format="integer|reference"/>
   </declare-styleable>
 </resources>

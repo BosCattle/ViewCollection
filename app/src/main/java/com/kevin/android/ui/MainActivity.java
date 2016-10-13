@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         mDatas.add("蒙层");
         mDatas.add("心形view");
         mDatas.add("带有虚线和文字的view");
+        mDatas.add("StepView");
         mAdapter = new RecyclerViewAdapter(this,mDatas);
         mIndexRecycler.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
 //        mIndexRecycler.addItemDecoration(null);
@@ -81,6 +82,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                 break;
             case 5:
                 DashLineActivity.startDashLine(MainActivity.this);
+                break;
+            case 6:
+                StepViewActivity.startStepView(MainActivity.this);
                 break;
         }
     }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -29,7 +30,12 @@ public class StepView extends View implements View.OnTouchListener  {
   private @ColorInt int mBackGroundUnselected;
   private @ColorInt int mColorSelected;
   private @ColorInt int mColorUnselected;
-  private int mLineHeight;
+  private float mLineHeight;
+  private Paint mCirclePaint;
+  private Paint mTextPaint;
+  private int mPosition;
+  private int mRadius;
+  private float mLineLenth;
 
   public StepView(Context context) {
     super(context,null);
@@ -54,8 +60,19 @@ public class StepView extends View implements View.OnTouchListener  {
     mBackGroundUnselected = array.getColor(R.styleable.StepView_background_unselected,Color.BLACK);
     mColorSelected = array.getColor(R.styleable.StepView_color_selected,Color.WHITE);
     mColorUnselected = array.getColor(R.styleable.StepView_color_unselected,Color.RED);
-    mLineHeight = array.getInt(R.styleable.StepView_line_height,20);
+    mLineHeight = array.getDimension(R.styleable.StepView_line_height,20);
+    mRadius = array.getInteger(R.styleable.StepView_circle_radius,5);
     array.recycle();
+    mCirclePaint = new Paint();
+    mCirclePaint.setColor(mBackGroundSelected);
+    mCirclePaint.setAntiAlias(true);
+    mCirclePaint.setStrokeWidth(2);
+    mCirclePaint.setStyle(Paint.Style.STROKE);
+    mTextPaint = new Paint();
+    mTextPaint.setColor(mColorSelected);
+    mCirclePaint.setAntiAlias(true);
+    mCirclePaint.setStrokeWidth(2);
+    mCirclePaint.setStyle(Paint.Style.STROKE);
   }
 
   @Override protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
@@ -68,6 +85,49 @@ public class StepView extends View implements View.OnTouchListener  {
 
   @Override protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
+    canvasCountType(canvas);
+  }
+
+
+  public void canvasCountType(Canvas canvas){
+    if (mViewCount<=0){
+      throw new RuntimeException("count can not be zero or minus.");
+    }
+    if (mRadius<=0){
+      throw new RuntimeException("radius can not be zero or minus.");
+    }
+    for (int i = 0;i<=mViewCount;i++){
+      //如果小于position
+      if (i<=mPosition){
+        //获取view的当前圆心点。
+        float left = getLeft();
+        float right = getRight();
+        float allWidth = right-left;
+        mLineLenth = computeLineLength(allWidth);
+        if (mPosition==0) {
+          canvas.drawCircle(getX()+mRadius, getY(), mRadius, mCirclePaint);
+          canvas.drawText(mPosition+"",getX()+mRadius, getY(),mTextPaint);
+          mPosition++;
+        }else {
+          canvas.drawCircle(getX()+mRadius+mPosition*(2*mRadius+mLineLenth),getY(),mRadius,mCirclePaint);
+          canvas.drawText(mPosition+"",getX()+mRadius+mPosition*(2*mRadius+mLineLenth),getY(),mTextPaint);
+          mPosition++;
+        }
+      }else {
+        canvas.drawCircle(getX()+mRadius+mPosition*(2*mRadius+mLineLenth),getY(),mRadius,mCirclePaint);
+        canvas.drawText(mPosition+"",getX()+mRadius+mPosition*(2*mRadius+mLineLenth),getY(),mTextPaint);
+        mPosition++;
+      }
+    }
+  }
+
+  /**
+   * 获取线的长度
+   * @param width
+   * @return
+   */
+  public float computeLineLength(float width){
+    return (width-(2*mRadius*mViewCount))/(mViewCount-1);
   }
 
   @Override public boolean onTouch(View v, MotionEvent event) {
@@ -76,7 +136,7 @@ public class StepView extends View implements View.OnTouchListener  {
     return true;
   }
 
-  public int getmLineHeight() {
+  public float getmLineHeight() {
     return mLineHeight;
   }
 
