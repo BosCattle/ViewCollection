@@ -44,15 +44,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    private void setUpAdapter() {
+        mDatas = new ArrayList<>();
         mDatas.add("仙女散花");
         mDatas.add("View事件分发");
         mDatas.add("Dialog测试");
         mDatas.add("蒙层");
         mDatas.add("心形view");
-    }
-
-    private void setUpAdapter() {
-        mDatas = new ArrayList<>();
+        mDatas.add("带有虚线和文字的view");
         mAdapter = new RecyclerViewAdapter(this,mDatas);
         mIndexRecycler.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
 //        mIndexRecycler.addItemDecoration(null);
@@ -77,6 +78,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                 break;
             case 4:
                 HeartViewActivity.startHeartView(MainActivity.this);
+                break;
+            case 5:
+                DashLineActivity.startDashLine(MainActivity.this);
                 break;
         }
     }

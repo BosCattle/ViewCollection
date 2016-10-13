@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <declare-styleable name="DashedLine">
+    <attr name="inner_padding" format="dimension|reference"/>
+    <attr name="line_color" format="color|reference"/>
+  </declare-styleable>
+  
+  <declare-styleable name="StepView">
+    <attr name="step_count" format="integer|reference"/>
+    <attr name="background_selected" format="color|reference"/>
+    <attr name="background_unselected" format="color|reference"/>
+    <attr name="color_selected" format="color|reference"/>
+    <attr name="color_unselected" format="color|reference"/>
+    <attr name="line_height" format="dimension|reference"/>
+  </declare-styleable>
+</resources>

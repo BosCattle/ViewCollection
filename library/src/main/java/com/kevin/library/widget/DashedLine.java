@@ -8,6 +8,7 @@ import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathEffect;
+import android.support.annotation.ColorInt;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.TextPaint;
 import android.util.AttributeSet;
@@ -37,6 +38,7 @@ public class DashedLine extends AppCompatTextView {
             getResources().getDisplayMetrics()));
     mLineColor =
         array.getColor(R.styleable.DashedLine_line_color, getTextColors().getDefaultColor());
+
   }
   @SuppressLint("DrawAllocation")
   @Override

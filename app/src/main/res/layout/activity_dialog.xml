@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_dialog"
     android:layout_width="match_parent"
@@ -8,6 +8,28 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="com.kevin.android.ui.DialogActivity">
 
-</RelativeLayout>
+  <Button
+      android:id="@+id/ok"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="ok"
+      />
+
+  <Button
+      android:id="@+id/error"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="error"
+      />
+
+  <Button
+      android:id="@+id/warning"
+      android:text="warning"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      />
+
+</LinearLayout>
