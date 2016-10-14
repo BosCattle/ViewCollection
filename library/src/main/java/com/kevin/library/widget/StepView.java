@@ -5,11 +5,16 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.icu.util.Measure;
 import android.support.annotation.ColorInt;
+import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import com.kevin.library.R;
+import com.kevin.library.util.ScreenUtils;
 
 /**
  * Class: StepView </br>
@@ -20,7 +25,7 @@ import com.kevin.library.R;
  * Update: 10/2/16 8:28 PM </br>
  **/
 
-public class StepView extends View implements View.OnTouchListener  {
+public class StepView extends View implements View.OnTouchListener {
 
   private static final String TAG = StepView.class.getSimpleName();
   private float mOldXValue;
@@ -32,55 +37,77 @@ public class StepView extends View implements View.OnTouchListener  {
   private @ColorInt int mColorUnselected;
   private float mLineHeight;
   private Paint mCirclePaint;
-  private Paint mTextPaint;
+  private TextPaint mTextPaint;
   private int mPosition;
-  private int mRadius;
+  private float mRadius;
   private float mLineLenth;
+  private int mWidth;
+  private int mHeight;
+  private int[] mInit;
 
   public StepView(Context context) {
-    super(context,null);
-    init(context,null);
+    super(context, null);
+    init(context, null);
   }
 
   public StepView(Context context, AttributeSet attrs) {
     super(context, attrs);
-    init(context,attrs);
+    init(context, attrs);
   }
 
   public StepView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-    init(context,attrs);
+    init(context, attrs);
   }
 
-  public void init(Context context,AttributeSet attrs){
+  public void init(Context context, AttributeSet attrs) {
     this.setOnTouchListener(this);
     TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.StepView);
-    mViewCount = array.getInteger(R.styleable.StepView_step_count,3);
+    mViewCount = array.getInteger(R.styleable.StepView_step_count, 3);
     mBackGroundSelected = array.getColor(R.styleable.StepView_background_selected, Color.RED);
-    mBackGroundUnselected = array.getColor(R.styleable.StepView_background_unselected,Color.BLACK);
-    mColorSelected = array.getColor(R.styleable.StepView_color_selected,Color.WHITE);
-    mColorUnselected = array.getColor(R.styleable.StepView_color_unselected,Color.RED);
-    mLineHeight = array.getDimension(R.styleable.StepView_line_height,20);
-    mRadius = array.getInteger(R.styleable.StepView_circle_radius,5);
+    mBackGroundUnselected = array.getColor(R.styleable.StepView_background_unselected, Color.BLACK);
+    mColorSelected = array.getColor(R.styleable.StepView_color_selected, Color.WHITE);
+    mColorUnselected = array.getColor(R.styleable.StepView_color_unselected, Color.RED);
+    mLineHeight = array.getDimension(R.styleable.StepView_line_height, 20);
+    mRadius = array.getDimension(R.styleable.StepView_circle_radius, 5);
     array.recycle();
     mCirclePaint = new Paint();
     mCirclePaint.setColor(mBackGroundSelected);
     mCirclePaint.setAntiAlias(true);
     mCirclePaint.setStrokeWidth(2);
-    mCirclePaint.setStyle(Paint.Style.STROKE);
-    mTextPaint = new Paint();
+    mCirclePaint.setStyle(Paint.Style.FILL);
+    mTextPaint = new TextPaint();
     mTextPaint.setColor(mColorSelected);
-    mCirclePaint.setAntiAlias(true);
-    mCirclePaint.setStrokeWidth(2);
-    mCirclePaint.setStyle(Paint.Style.STROKE);
+    mTextPaint.setAntiAlias(true);
+    mTextPaint.setStrokeWidth(2);
+    mTextPaint.setStyle(Paint.Style.STROKE);
+    mTextPaint.setTextSize(50);
   }
 
   @Override protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
     super.onLayout(changed, left, top, right, bottom);
+    mInit = new int[2];
+    mInit[0] = left;
+    mInit[1] = top + (bottom - top) / 2;
   }
 
   @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    Log.d(TAG, "onMeasure: " + MeasureSpec.getSize(heightMeasureSpec));
+    int xpad = (getPaddingLeft() + getPaddingRight());
+    int ypad = (getPaddingTop() + getPaddingBottom());
+    mWidth = MeasureSpec.getSize(widthMeasureSpec) - xpad;
+    mHeight = MeasureSpec.getSize(heightMeasureSpec) - ypad;
+    int mWidthSpec = MeasureSpec.getMode(widthMeasureSpec);
+    int mHeightSpec = MeasureSpec.getMode(heightMeasureSpec);
+    if (mWidthSpec == MeasureSpec.AT_MOST && mHeightSpec == MeasureSpec.AT_MOST) {
+      setMeasuredDimension(mWidth, mHeight);
+    } else if (mWidthSpec == MeasureSpec.AT_MOST) {
+
+    } else if (mHeightSpec == MeasureSpec.AT_MOST) {
+
+    }
+    setMeasuredDimension(mWidth, mHeight);
   }
 
   @Override protected void onDraw(Canvas canvas) {
@@ -88,34 +115,46 @@ public class StepView extends View implements View.OnTouchListener  {
     canvasCountType(canvas);
   }
 
+  private int measureWidth(int measureSpec) {
+    return 0;
+  }
 
-  public void canvasCountType(Canvas canvas){
-    if (mViewCount<=0){
+  public int measureHeight(int measureSpec) {
+    return 0;
+  }
+
+  public void canvasCountType(Canvas canvas) {
+    if (mViewCount <= 0) {
       throw new RuntimeException("count can not be zero or minus.");
     }
-    if (mRadius<=0){
+    if (mRadius <= 0) {
       throw new RuntimeException("radius can not be zero or minus.");
     }
-    for (int i = 0;i<=mViewCount;i++){
+    for (int i = 0; i <= mViewCount; i++) {
       //如果小于position
-      if (i<=mPosition){
+      if (i <= mPosition) {
         //获取view的当前圆心点。
-        float left = getLeft();
-        float right = getRight();
-        float allWidth = right-left;
+        float allWidth = getWidth();
+        float testWidth = ScreenUtils.getDisplayWidth(getContext());
+        Log.d(TAG, "canvasCountType: " + testWidth);
+        Log.d(TAG, "my-canvasCountType: " + allWidth);
         mLineLenth = computeLineLength(allWidth);
-        if (mPosition==0) {
-          canvas.drawCircle(getX()+mRadius, getY(), mRadius, mCirclePaint);
-          canvas.drawText(mPosition+"",getX()+mRadius, getY(),mTextPaint);
+        if (mPosition == 0) {
+          canvas.drawCircle(mInit[0] + mRadius, mInit[1], mRadius, mCirclePaint);
+          canvas.drawText(mPosition + "", mInit[0] + mRadius, mInit[1], mTextPaint);
           mPosition++;
-        }else {
-          canvas.drawCircle(getX()+mRadius+mPosition*(2*mRadius+mLineLenth),getY(),mRadius,mCirclePaint);
-          canvas.drawText(mPosition+"",getX()+mRadius+mPosition*(2*mRadius+mLineLenth),getY(),mTextPaint);
+        } else {
+          canvas.drawCircle(getX() + mRadius + mPosition * (2 * mRadius + mLineLenth), getY(),
+              mRadius, mCirclePaint);
+          canvas.drawText(mPosition + "", getX() + mRadius + mPosition * (2 * mRadius + mLineLenth),
+              getY(), mTextPaint);
           mPosition++;
         }
-      }else {
-        canvas.drawCircle(getX()+mRadius+mPosition*(2*mRadius+mLineLenth),getY(),mRadius,mCirclePaint);
-        canvas.drawText(mPosition+"",getX()+mRadius+mPosition*(2*mRadius+mLineLenth),getY(),mTextPaint);
+      } else {
+        canvas.drawCircle(getX() + mRadius + mPosition * (2 * mRadius + mLineLenth), getY(),
+            mRadius, mCirclePaint);
+        canvas.drawText(mPosition + "", getX() + mRadius + mPosition * (2 * mRadius + mLineLenth),
+            getY(), mTextPaint);
         mPosition++;
       }
     }
@@ -123,11 +162,9 @@ public class StepView extends View implements View.OnTouchListener  {
 
   /**
    * 获取线的长度
-   * @param width
-   * @return
    */
-  public float computeLineLength(float width){
-    return (width-(2*mRadius*mViewCount))/(mViewCount-1);
+  public float computeLineLength(float width) {
+    return (width - (2 * mRadius * mViewCount)) / (mViewCount - 1);
   }
 
   @Override public boolean onTouch(View v, MotionEvent event) {
