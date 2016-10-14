@@ -13,5 +13,7 @@
     <attr name="color_unselected" format="color|reference"/>
     <attr name="line_height" format="dimension|reference"/>
     <attr name="circle_radius" format="dimension|reference"/>
+    <attr name="step_position" format="integer|reference"/>
+    <attr name="text_size" format="dimension|reference"/>
   </declare-styleable>
 </resources>

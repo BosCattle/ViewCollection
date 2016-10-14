@@ -11,18 +11,19 @@
     >
 
   <com.kevin.library.widget.StepView
-      android:layout_marginRight="@dimen/activity_horizontal_margin"
-      android:layout_marginLeft="@dimen/activity_horizontal_margin"
       android:id="@+id/step_view"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:step_count="3"
+      android:layout_height="100dp"
+      app:step_count="4"
       app:background_selected="@color/colorAccent"
       app:background_unselected="@color/whiteBackground"
       app:color_selected="@android:color/black"
       app:color_unselected="@color/colorPrimary"
       app:line_height="10dp"
-      app:circle_radius="20dp"
+      app:circle_radius="30dp"
+      android:layout_gravity="center"
+      app:step_position="0"
+      app:text_size="28sp"
       />
 
 </LinearLayout>
