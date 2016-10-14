@@ -9,12 +9,14 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.ColorInt;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v4.view.ViewCompat;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import com.kevin.library.R;
 import com.kevin.library.util.ScreenUtils;
 
@@ -52,18 +54,18 @@ public class StepView extends View {
   private GestureDetectorCompat mDetector;
 
   public StepView(Context context) {
-    super(context, null);
+    super(context);
     init(context, null);
   }
 
   public StepView(Context context, AttributeSet attrs) {
     super(context, attrs);
-    init(context, attrs);
+    init(context,attrs);
   }
 
   public StepView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-    init(context, attrs);
+    init(context,attrs);
   }
 
   public void init(Context context, AttributeSet attrs) {
