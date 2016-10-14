@@ -6,13 +6,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.icu.util.Measure;
 import android.support.annotation.ColorInt;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import com.kevin.library.R;
 import com.kevin.library.util.ScreenUtils;
 
@@ -84,11 +84,10 @@ public class StepView extends View implements View.OnTouchListener {
     mTextPaint.setTextSize(50);
   }
 
-  @Override protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-    super.onLayout(changed, left, top, right, bottom);
+  @Override protected void onLayout(boolean changed, int l, int t, int r, int b) {
     mInit = new int[2];
-    mInit[0] = left;
-    mInit[1] = top + (bottom - top) / 2;
+    mInit[0] = l;
+    mInit[1] = t + (b - t) / 2;
   }
 
   @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -100,14 +99,7 @@ public class StepView extends View implements View.OnTouchListener {
     mHeight = MeasureSpec.getSize(heightMeasureSpec) - ypad;
     int mWidthSpec = MeasureSpec.getMode(widthMeasureSpec);
     int mHeightSpec = MeasureSpec.getMode(heightMeasureSpec);
-    if (mWidthSpec == MeasureSpec.AT_MOST && mHeightSpec == MeasureSpec.AT_MOST) {
-      setMeasuredDimension(mWidth, mHeight);
-    } else if (mWidthSpec == MeasureSpec.AT_MOST) {
-
-    } else if (mHeightSpec == MeasureSpec.AT_MOST) {
-
-    }
-    setMeasuredDimension(mWidth, mHeight);
+    setMeasuredDimension(mWidth, ScreenUtils.dp2px(getContext(), 100));
   }
 
   @Override protected void onDraw(Canvas canvas) {
@@ -134,27 +126,23 @@ public class StepView extends View implements View.OnTouchListener {
       //如果小于position
       if (i <= mPosition) {
         //获取view的当前圆心点。
-        float allWidth = getWidth();
-        float testWidth = ScreenUtils.getDisplayWidth(getContext());
-        Log.d(TAG, "canvasCountType: " + testWidth);
-        Log.d(TAG, "my-canvasCountType: " + allWidth);
-        mLineLenth = computeLineLength(allWidth);
+        mLineLenth = computeLineLength(mWidth);
         if (mPosition == 0) {
           canvas.drawCircle(mInit[0] + mRadius, mInit[1], mRadius, mCirclePaint);
           canvas.drawText(mPosition + "", mInit[0] + mRadius, mInit[1], mTextPaint);
           mPosition++;
         } else {
-          canvas.drawCircle(getX() + mRadius + mPosition * (2 * mRadius + mLineLenth), getY(),
+          canvas.drawCircle(mInit[0] + mRadius + mPosition * (2 * mRadius + mLineLenth), mInit[1],
               mRadius, mCirclePaint);
-          canvas.drawText(mPosition + "", getX() + mRadius + mPosition * (2 * mRadius + mLineLenth),
-              getY(), mTextPaint);
+          canvas.drawText(mPosition + "", mInit[0] + mRadius + mPosition * (2 * mRadius + mLineLenth),
+              mInit[1], mTextPaint);
           mPosition++;
         }
       } else {
-        canvas.drawCircle(getX() + mRadius + mPosition * (2 * mRadius + mLineLenth), getY(),
+        canvas.drawCircle(mInit[0] + mRadius + mPosition * (2 * mRadius + mLineLenth), mInit[1],
             mRadius, mCirclePaint);
-        canvas.drawText(mPosition + "", getX() + mRadius + mPosition * (2 * mRadius + mLineLenth),
-            getY(), mTextPaint);
+        canvas.drawText(mPosition + "", mInit[0] + mRadius + mPosition * (2 * mRadius + mLineLenth),
+            mInit[1], mTextPaint);
         mPosition++;
       }
     }

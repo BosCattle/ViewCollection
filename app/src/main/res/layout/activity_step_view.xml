@@ -25,10 +25,4 @@
       app:circle_radius="20dp"
       />
 
-  <ImageView
-      android:src="@mipmap/ic_dialog_info"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      />
-
 </LinearLayout>
