@@ -3,6 +3,7 @@
     package="com.kevin.android">
 
   <application
+      android:hardwareAccelerated="true"
       android:allowBackup="true"
       android:icon="@mipmap/ic_launcher"
       android:label="@string/app_name"
@@ -25,8 +26,8 @@
         android:theme="@style/AppTheme"/>
     <activity android:name=".ui.MaskLayerDialogActivity"/>
     <activity android:name=".ui.HeartViewActivity"/>
-    <activity android:name=".ui.StepViewActivity">
-    </activity>
+    <activity android:name=".ui.StepViewActivity"
+        android:hardwareAccelerated="false"/>
     <activity android:name=".ui.DashLineActivity">
     </activity>
   </application>

@@ -1,6 +1,5 @@
 package com.kevin.library.widget;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -9,14 +8,14 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.ColorInt;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v4.view.VelocityTrackerCompat;
 import android.support.v4.view.ViewCompat;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
-import android.view.ViewGroup;
 import com.kevin.library.R;
 import com.kevin.library.util.ScreenUtils;
 
@@ -52,6 +51,7 @@ public class StepView extends View {
   private int mStepPosition;
   private float mTextSize;
   private GestureDetectorCompat mDetector;
+  private VelocityTracker mVelocityTracker;
 
   public StepView(Context context) {
     super(context);
@@ -60,12 +60,12 @@ public class StepView extends View {
 
   public StepView(Context context, AttributeSet attrs) {
     super(context, attrs);
-    init(context,attrs);
+    init(context, attrs);
   }
 
   public StepView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-    init(context,attrs);
+    init(context, attrs);
   }
 
   public void init(Context context, AttributeSet attrs) {
@@ -98,6 +98,7 @@ public class StepView extends View {
     mLinePaint.setStyle(Paint.Style.FILL);
     //mDetector = new GestureDetectorCompat(getContext(), this);
     //mDetector.setOnDoubleTapListener(this);
+
   }
 
   @Override protected void onLayout(boolean changed, int l, int t, int r, int b) {
@@ -138,12 +139,12 @@ public class StepView extends View {
     if (mRadius <= 0) {
       throw new RuntimeException("radius can not be zero or minus.");
     }
-    for (int i = 0; i <= mViewCount && mPosition <= mViewCount; i++) {
+    for (mPosition = 0; mPosition <= mViewCount; mPosition++) {
       //如果小于position
       float textWidth = mTextPaint.measureText(mPosition + "");
       Rect rect = new Rect();
       mTextPaint.getTextBounds(mPosition + "", 0, (mPosition + "").length(), rect);
-      if (i <= mStepPosition) {
+      if (mPosition <= mStepPosition) {
         mCirclePaint.setColor(mBackGroundSelected);
         mLinePaint.setColor(mBackGroundSelected);
         //获取view的当前圆心点。
@@ -168,7 +169,6 @@ public class StepView extends View {
               mInit[0] + (2 * mRadius) + (mPosition - 1) * (2 * mRadius + mLineLenth) + mLineLenth,
               mInit[1], mLinePaint);
         }
-        mPosition++;
       } else {
         mCirclePaint.setColor(mBackGroundUnselected);
         mLinePaint.setColor(mBackGroundUnselected);
@@ -181,9 +181,9 @@ public class StepView extends View {
             mInit[1],
             mInit[0] + (2 * mRadius) + (mPosition - 1) * (2 * mRadius + mLineLenth) + mLineLenth,
             mInit[1], mLinePaint);
-        mPosition++;
       }
     }
+    mPosition = mStepPosition;
   }
 
   /**
@@ -243,12 +243,31 @@ public class StepView extends View {
 
   @Override public boolean onTouchEvent(MotionEvent event) {
     //首先，我们需要将本身空间扩大到当前activity大小，使点击效果更大。
-    switch (event.getAction()) {
+    int index = event.getActionIndex();
+    int action = event.getActionMasked();
+    int pointerId = event.getPointerId(index);
+    switch (action) {
       case MotionEvent.ACTION_DOWN:
         Log.d(TAG, "onTouchEvent: 你按下了手指");
+        if (mVelocityTracker == null) {
+          mVelocityTracker = VelocityTracker.obtain();
+        } else {
+          mVelocityTracker.clear();
+        }
+        mVelocityTracker.addMovement(event);
         break;
       case MotionEvent.ACTION_MOVE:
         Log.d(TAG, "onTouchEvent: 你移动了手指");
+        mVelocityTracker.addMovement(event);
+        mVelocityTracker.computeCurrentVelocity(1000);
+        Log.d("", "X velocity: " + VelocityTrackerCompat.getXVelocity(mVelocityTracker, pointerId));
+        if (VelocityTrackerCompat.getXVelocity(mVelocityTracker, pointerId) > 1000&&mStepPosition<mViewCount) {
+          nextStep();
+        }
+        if (VelocityTrackerCompat.getXVelocity(mVelocityTracker, pointerId)<0&&mStepPosition>0){
+          previous();
+        }
+        Log.d("", "Y velocity: " + VelocityTrackerCompat.getYVelocity(mVelocityTracker, pointerId));
         break;
       case MotionEvent.ACTION_HOVER_MOVE:
         break;
@@ -257,6 +276,7 @@ public class StepView extends View {
       case MotionEvent.ACTION_BUTTON_RELEASE:
         break;
       case MotionEvent.ACTION_CANCEL:
+        mVelocityTracker.recycle();
         break;
       case MotionEvent.ACTION_HOVER_ENTER:
         break;
@@ -282,5 +302,30 @@ public class StepView extends View {
 
   @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
     super.onSizeChanged(w, h, oldw, oldh);
+    Log.d(TAG, "onSizeChanged: " + w + " " + h + " " + oldw + " " + oldh);
+  }
+
+  public void nextStep() {
+    if (mStepPosition >= 0) {
+      mStepPosition++;
+      Log.d(TAG, "nextStep: " + mStepPosition);
+      new Thread(new Runnable() {
+        @Override public void run() {
+          ViewCompat.postInvalidateOnAnimation(StepView.this);
+        }
+      }).start();
+    }
+  }
+
+  public void previous() {
+    if (mStepPosition >0) {
+      mStepPosition--;
+      Log.d(TAG, "nextStep: " + mStepPosition);
+      new Thread(new Runnable() {
+        @Override public void run() {
+          ViewCompat.postInvalidateOnAnimation(StepView.this);
+        }
+      }).start();
+    }
   }
 }
