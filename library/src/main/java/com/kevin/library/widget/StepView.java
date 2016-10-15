@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.VelocityTrackerCompat;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+import android.view.ViewConfiguration;
 import com.kevin.library.R;
 import com.kevin.library.util.ScreenUtils;
 
@@ -52,6 +54,9 @@ public class StepView extends View {
   private float mTextSize;
   private GestureDetectorCompat mDetector;
   private VelocityTracker mVelocityTracker;
+  private int mTouchSlop;
+  private boolean mIsScroll ;
+  private boolean mDirect;
 
   public StepView(Context context) {
     super(context);
@@ -98,7 +103,8 @@ public class StepView extends View {
     mLinePaint.setStyle(Paint.Style.FILL);
     //mDetector = new GestureDetectorCompat(getContext(), this);
     //mDetector.setOnDoubleTapListener(this);
-
+    ViewConfiguration vc = ViewConfiguration.get(getContext());
+    mTouchSlop = vc.getScaledTouchSlop();
   }
 
   @Override protected void onLayout(boolean changed, int l, int t, int r, int b) {
@@ -246,6 +252,10 @@ public class StepView extends View {
     int index = event.getActionIndex();
     int action = event.getActionMasked();
     int pointerId = event.getPointerId(index);
+    float lastX = 0;
+    float lastY = 0;
+    float currentX = 0;
+    float currentY = 0;
     switch (action) {
       case MotionEvent.ACTION_DOWN:
         Log.d(TAG, "onTouchEvent: 你按下了手指");
@@ -255,17 +265,27 @@ public class StepView extends View {
           mVelocityTracker.clear();
         }
         mVelocityTracker.addMovement(event);
+        lastX = event.getX();
+        lastY = event.getY();
+        mIsScroll = false;
         break;
       case MotionEvent.ACTION_MOVE:
         Log.d(TAG, "onTouchEvent: 你移动了手指");
         mVelocityTracker.addMovement(event);
         mVelocityTracker.computeCurrentVelocity(1000);
-        Log.d("", "X velocity: " + VelocityTrackerCompat.getXVelocity(mVelocityTracker, pointerId));
-        if (VelocityTrackerCompat.getXVelocity(mVelocityTracker, pointerId) > 1000&&mStepPosition<mViewCount) {
-          nextStep();
+        currentX = event.getX();
+
+        if (VelocityTrackerCompat.getXVelocity(mVelocityTracker, pointerId) > 1000
+            && mStepPosition < mViewCount
+            && Math.abs(currentX - lastX) >= mTouchSlop) {
+          mIsScroll = true;
+          mDirect = true;
         }
-        if (VelocityTrackerCompat.getXVelocity(mVelocityTracker, pointerId)<0&&mStepPosition>0){
-          previous();
+        if (VelocityTrackerCompat.getXVelocity(mVelocityTracker, pointerId) < -1000
+            && mStepPosition > 0
+            && Math.abs(currentX - lastX) >= mTouchSlop) {
+          mIsScroll = true;
+          mDirect = false;
         }
         Log.d("", "Y velocity: " + VelocityTrackerCompat.getYVelocity(mVelocityTracker, pointerId));
         break;
@@ -291,10 +311,19 @@ public class StepView extends View {
       case MotionEvent.ACTION_POINTER_INDEX_MASK:
         break;
       case MotionEvent.ACTION_SCROLL:
+        Log.d(TAG, "onTouchEvent: scroll");
         break;
       case MotionEvent.ACTION_POINTER_UP:
         break;
       case MotionEvent.ACTION_UP:
+        if (mIsScroll){
+          if (mDirect){
+            nextStep();
+          }else {
+            previous();
+          }
+        }
+        Log.d(TAG, "onTouchEvent: up");
         break;
     }
     return super.onTouchEvent(event);
@@ -308,24 +337,15 @@ public class StepView extends View {
   public void nextStep() {
     if (mStepPosition >= 0) {
       mStepPosition++;
-      Log.d(TAG, "nextStep: " + mStepPosition);
-      new Thread(new Runnable() {
-        @Override public void run() {
-          ViewCompat.postInvalidateOnAnimation(StepView.this);
-        }
-      }).start();
+      ViewCompat.postInvalidateOnAnimation(StepView.this);
     }
   }
 
   public void previous() {
-    if (mStepPosition >0) {
+    if (mStepPosition > 0) {
       mStepPosition--;
       Log.d(TAG, "nextStep: " + mStepPosition);
-      new Thread(new Runnable() {
-        @Override public void run() {
-          ViewCompat.postInvalidateOnAnimation(StepView.this);
-        }
-      }).start();
+      ViewCompat.postInvalidateOnAnimation(StepView.this);
     }
   }
 }
