@@ -257,8 +257,9 @@ public class StepView extends View {
     float currentX = 0;
     float currentY = 0;
     switch (action) {
+      //手指按下
       case MotionEvent.ACTION_DOWN:
-        Log.d(TAG, "onTouchEvent: 你按下了手指");
+        Log.d(TAG, "onTouchEvent: ACTION_DOWN");
         if (mVelocityTracker == null) {
           mVelocityTracker = VelocityTracker.obtain();
         } else {
@@ -269,8 +270,9 @@ public class StepView extends View {
         lastY = event.getY();
         mIsScroll = false;
         break;
+      //手指移动，注意，移动期间会多次收集到这个信息
       case MotionEvent.ACTION_MOVE:
-        Log.d(TAG, "onTouchEvent: 你移动了手指");
+        Log.d(TAG, "onTouchEvent: ACTION_MOVE");
         mVelocityTracker.addMovement(event);
         mVelocityTracker.computeCurrentVelocity(1000);
         currentX = event.getX();
@@ -287,34 +289,20 @@ public class StepView extends View {
           mIsScroll = true;
           mDirect = false;
         }
-        Log.d("", "Y velocity: " + VelocityTrackerCompat.getYVelocity(mVelocityTracker, pointerId));
         break;
-      case MotionEvent.ACTION_HOVER_MOVE:
-        break;
-      case MotionEvent.ACTION_BUTTON_PRESS:
-        break;
-      case MotionEvent.ACTION_BUTTON_RELEASE:
-        break;
-      case MotionEvent.ACTION_CANCEL:
-        mVelocityTracker.recycle();
-        break;
-      case MotionEvent.ACTION_HOVER_ENTER:
-        break;
-      case MotionEvent.ACTION_HOVER_EXIT:
-        break;
-      case MotionEvent.ACTION_MASK:
-        break;
-      case MotionEvent.ACTION_OUTSIDE:
-        break;
+      //第二根手指，或者背的手指按下
       case MotionEvent.ACTION_POINTER_DOWN:
+        Log.d(TAG, "onTouchEvent: ACTION_POINTER_DOWN");
         break;
-      case MotionEvent.ACTION_POINTER_INDEX_MASK:
-        break;
+      // 滚动事件
       case MotionEvent.ACTION_SCROLL:
-        Log.d(TAG, "onTouchEvent: scroll");
+        Log.d(TAG, "onTouchEvent: ACTION_SCROLL");
         break;
+      // 第二根手指或者别的手指抬起
       case MotionEvent.ACTION_POINTER_UP:
+        Log.d(TAG, "onTouchEvent: ACTION_POINTER_UP");
         break;
+      // 最后一根手指抬起
       case MotionEvent.ACTION_UP:
         if (mIsScroll){
           if (mDirect){
@@ -323,7 +311,37 @@ public class StepView extends View {
             previous();
           }
         }
-        Log.d(TAG, "onTouchEvent: up");
+        Log.d(TAG, "onTouchEvent: ACTION_UP");
+        break;
+      //当前手势操作被取消
+      case MotionEvent.ACTION_CANCEL:
+        mVelocityTracker.recycle();
+        Log.d(TAG, "onTouchEvent: ACTION_CANCEL");
+        break;
+      // 手势操作发生在UI组件外
+      case MotionEvent.ACTION_OUTSIDE:
+        Log.d(TAG, "onTouchEvent: ACTION_OUTSIDE");
+        break;
+//------------------------------------------非手势操作，无需关心--------------------------------------//
+      //鼠标在view移动
+      case MotionEvent.ACTION_HOVER_MOVE:
+        Log.d(TAG, "onTouchEvent: ACTION_HOVER_MOVE");
+        break;
+      // 鼠标按钮
+      case MotionEvent.ACTION_BUTTON_PRESS:
+        Log.d(TAG, "onTouchEvent: ACTION_BUTTON_PRESS");
+        break;
+      // 鼠标按钮
+      case MotionEvent.ACTION_BUTTON_RELEASE:
+        Log.d(TAG, "onTouchEvent: ACTION_BUTTON_RELEASE");
+        break;
+      // 鼠标进入view
+      case MotionEvent.ACTION_HOVER_ENTER:
+        Log.d(TAG, "onTouchEvent: ACTION_HOVER_ENTER");
+        break;
+      //鼠标离开view
+      case MotionEvent.ACTION_HOVER_EXIT:
+        Log.d(TAG, "onTouchEvent: ACTION_HOVER_EXIT");
         break;
     }
     return super.onTouchEvent(event);
