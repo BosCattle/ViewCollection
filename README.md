@@ -39,7 +39,7 @@ allprojects {
 **Add the dependency**
 ```DSL
 dependencies {
-	        compile 'com.github.jiangTaoQuite:ViewCollection:0.0.1_alpha'
+	        compile 'com.github.BosCattle:ViewCollection:0.0.2_alpha'
 	}
 ```
 
