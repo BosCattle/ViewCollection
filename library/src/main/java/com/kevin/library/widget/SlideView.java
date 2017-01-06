@@ -21,6 +21,7 @@ public class SlideView extends RelativeLayout {
   private Context mContext;
   private Scroller mScroller;
   private View mRootView;
+  private int mMinScrollWidth = 200;
 
   public SlideView(Context context) {
     super(context);
