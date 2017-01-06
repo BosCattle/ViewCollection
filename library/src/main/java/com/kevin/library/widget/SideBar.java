@@ -25,7 +25,7 @@ public class SideBar extends View {
     };
     private int choose = -1;
     private Paint paint = new Paint();
-    private final static int CHAR_HEIGHT_DP = 18;
+    private final static int CHAR_HEIGHT_DP = 16;
 
     private List<String> mContainerCharList;
 
